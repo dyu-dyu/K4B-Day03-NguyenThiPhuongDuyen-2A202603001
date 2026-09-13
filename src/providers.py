@@ -27,36 +27,105 @@ class BaseLLMProvider:
 
 
 class MockOfflineProvider(BaseLLMProvider):
-    """Offline Mock Provider dùng để chạy thử mà không tốn API Key"""
+    """Offline Mock Provider cho đề tài Trợ lý Tư vấn Sức khỏe Vinmec."""
+
     def __init__(self):
         self.model_name = "Offline-Mock-Model-2026"
 
     def generate(self, prompt: str, system_prompt: str = "") -> str:
-        return f"[Mock Chatbot Response]: Xin chào! Tôi đã nhận được câu hỏi '{prompt}'. (Chế độ Chatbot không có Tool tra cứu dữ liệu thời gian thực)."
+        return (
+            f"[Mock Chatbot Response]: Tôi đã nhận được câu hỏi "
+            f"'{prompt}'. Đây là chế độ Chatbot không sử dụng Tool."
+        )
 
-    def generate_with_tools(self, prompt: str, tools_schema: List[Dict[str, Any]], system_prompt: str = "") -> Dict[str, Any]:
+    def generate_with_tools(
+        self,
+        prompt: str,
+        tools_schema: List[Dict[str, Any]],
+        system_prompt: str = ""
+    ) -> Dict[str, Any]:
+
         prompt_lower = prompt.lower()
-        
-        # Mô phỏng nhận diện intent gọi Tool
-        if "sv2026001" in prompt_lower and "đặt lịch" in prompt_lower:
+
+        # TC02: Tra cứu lịch bác sĩ
+        if "tra cứu" in prompt_lower and "bác sĩ" in prompt_lower:
+            return {
+                "type": "tool_call",
+                "tool_name": "doctor_schedule_query",
+                "arguments": {
+                    "doctor_name": "Phạm Văn Khoa",
+                    "specialty": "Tim mạch"
+                },
+                "thought": (
+                    "Người dùng muốn tra cứu lịch làm việc của "
+                    "bác sĩ Phạm Văn Khoa thuộc chuyên khoa Tim mạch. "
+                    "Tôi sẽ gọi tool doctor_schedule_query."
+                )
+            }
+
+        # TC03: Đặt lịch với bác sĩ cụ thể
+        elif "đặt lịch" in prompt_lower and "phạm văn khoa" in prompt_lower:
             return {
                 "type": "tool_call",
                 "tool_name": "schedule_appointment",
-                "arguments": {"student_id": "SV2026001", "datetime_str": "14:00 15/09/2026", "advisor_name": "PGS.TS Nguyễn Văn A"},
-                "thought": "Người dùng yêu cầu đặt lịch hẹn tư vấn cho sinh viên SV2026001. Tôi sẽ gọi tool schedule_appointment."
+                "arguments": {
+                    "patient_id": "PATIENT001",
+                    "datetime_str": "09:00 20/09/2026",
+                    "doctor_name": "Phạm Văn Khoa"
+                },
+                "thought": (
+                    "Người dùng muốn đặt lịch khám với bác sĩ "
+                    "Phạm Văn Khoa vào lúc 09:00 ngày 20/09/2026. "
+                    "Tôi sẽ kiểm tra và thực hiện đặt lịch."
+                )
             }
-        elif "sv2026001" in prompt_lower or "tra cứu" in prompt_lower:
+
+        # TC05: Bác sĩ không tồn tại
+        elif "nguyễn văn xyz" in prompt_lower:
             return {
                 "type": "tool_call",
-                "tool_name": "academic_query",
-                "arguments": {"student_id": "SV2026001"},
-                "thought": "Người dùng muốn tra cứu thông tin học vụ của sinh viên SV2026001. Tôi sẽ gọi tool academic_query."
+                "tool_name": "schedule_appointment",
+                "arguments": {
+                    "patient_id": "PATIENT001",
+                    "datetime_str": "09:00 20/09/2026",
+                    "doctor_name": "Nguyễn Văn XYZ"
+                },
+                "thought": (
+                    "Người dùng yêu cầu đặt lịch với bác sĩ Nguyễn Văn XYZ. "
+                    "Tôi sẽ sử dụng Tool để kiểm tra bác sĩ."
+                )
             }
+
+        # TC04: Tìm bác sĩ Tim mạch có lịch trống
+        elif "tim mạch" in prompt_lower and "sáng" in prompt_lower:
+            return {
+                "type": "tool_call",
+                "tool_name": "doctor_schedule_query",
+                "arguments": {
+                    "doctor_name": "Phạm Văn Khoa",
+                    "specialty": "Tim mạch",
+                    "date": "20/09/2026"
+                },
+                "thought": (
+                    "Người dùng muốn khám Tim mạch vào sáng ngày "
+                    "20/09/2026. Tôi sẽ tra cứu lịch bác sĩ Tim mạch "
+                    "và các khung giờ còn trống."
+                )
+            }
+
+        # TC01: Câu hỏi chung về Vinmec
         else:
             return {
                 "type": "text",
-                "content": f"[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-                "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool."
+                "content": (
+                    "Vinmec cung cấp nhiều chuyên khoa khám chữa bệnh "
+                    "như Tim mạch, Nội tiết, Nhi khoa và nhiều chuyên "
+                    "khoa khác."
+                ),
+                "thought": (
+                    "Đây là câu hỏi chung về các chuyên khoa tại Vinmec, "
+                    "có thể trả lời trực tiếp mà không cần gọi Tool."
+                )
             }
 
 

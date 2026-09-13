@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Xin chào, bạn có thể giới thiệu các chuyên khoa khám bệnh tại Vinmec không?",
+    "expected_behavior": "Chatbot trả lời trực tiếp từ System Prompt, không cần gọi bất kỳ Tool nào.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "HHãy tra cứu lịch làm việc của bác sĩ Phạm Văn Khoa thuộc khoa Tim mạch.",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu lịch bác sĩ và tự động phát sinh Tool Call 'doctor_schedule_query' với thông tin bác sĩ Phạm Văn Khoa và chuyên khoa Tim mạch.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "appointment_booking",
+    "question": "Tôi muốn đặt lịch khám Tim mạch với bác sĩ Phạm Văn Khoa vào lúc 9 giờ sáng ngày 20/09/2026.",
+    "expected_behavior": "Agent xác định thông tin chuyên khoa, bác sĩ, ngày và giờ khám; kiểm tra thông tin slot và tự động phát sinh Tool Call 'book_appointment' để đặt lịch nếu thời gian còn trống. Agent phải yêu cầu xác nhận trước khi hoàn tất đặt lịch nếu hệ thống có bước xác nhận.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "multi_step_reasoning",
+    "question": "Tôi muốn khám Tim mạch vào sáng ngày 20/09/2026. Hãy tìm bác sĩ Tim mạch có lịch trống phù hợp và đặt lịch khám cho tôi.",
+    "expected_behavior": "Agent thực hiện chuỗi suy luận ReAct đa bước: xác định chuyên khoa Tim mạch -> tra cứu danh sách bác sĩ -> kiểm tra lịch làm việc và các khung giờ còn trống -> lựa chọn bác sĩ/khung giờ phù hợp -> tiến hành đặt lịch thông qua Tool Call 'book_appointment'. Agent phải dựa trên kết quả của từng Tool Call để quyết định bước tiếp theo và không được tự bịa lịch trống.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "edge_case_handling",
+    "question": "Tôi muốn đặt lịch khám với bác sĩ Nguyễn Văn XYZ vào lúc 9 giờ sáng ngày 20/09/2026.",
+    "expected_behavior": "Agent nhận kết quả NOT_FOUND từ Tool và đưa ra phản hồi lịch sự, chính xác không bịa đặt dữ liệu.",
+    "complexity": "Medium"
+  }
+]

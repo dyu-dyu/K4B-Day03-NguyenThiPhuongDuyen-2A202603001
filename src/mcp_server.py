@@ -14,11 +14,12 @@ if sys.stdout.encoding != 'utf-8':
     except Exception:
         pass
 
-class MCPAcademicServer:
+class MCPVinmecServer:
     """
-    Giả lập MCP Server tuân thủ chuẩn giao thức Model Context Protocol
+    Giả lập MCP Server cho Trợ lý Tư vấn Sức khỏe Vinmec.
+    Cung cấp các Tool tra cứu lịch bác sĩ và đặt lịch khám.
     """
-    def __init__(self, server_name: str = "vinuni-academic-mcp-server"):
+    def __init__(self, server_name: str = "vinmec-health-mcp-server"):
         self.server_name = server_name
         self.version = "2026.1.0"
         
@@ -39,30 +40,91 @@ class MCPAcademicServer:
         # 3. Đóng gói phản hồi và trả về Dict theo đúng chuẩn giao thức MCP JSON-RPC 2.0:
         #    - Các trường bắt buộc: "jsonrpc": "2.0", "server": self.server_name, "tool": tool_name, "result": content
         # --------------------------------------------------------------------------
-        return {}
+        content = dispatch_tool_call(tool_name, arguments)
+        content = json.loads(content)
+        return {
+        "jsonrpc": "2.0",
+        "server": self.server_name,
+        "tool": tool_name,
+        "result": content
+        }
 
 
 if __name__ == "__main__":
-    print("==========================================================")
-    print("🔌 KIỂM THỬ ĐỘC LẬP MCP SERVER (vinuni-academic-mcp-server)")
-    print("==========================================================")
-    
-    server = MCPAcademicServer()
-    tools = server.list_tools()
-    print(f"✅ Khởi tạo thành công MCP Server: {server.server_name} (Version: {server.version})")
-    print(f"📦 Số lượng Tools công bố: {len(tools)}")
-    
-    # Kiểm tra trạng thái TODO 1.2 (Tool Schema)
-    sched_tool = next((t for t in tools if t.get("name") == "schedule_appointment"), None)
-    if sched_tool and not sched_tool.get("parameters", {}).get("properties"):
-        print("⏳ [TODO 1.2]: Tool 'schedule_appointment' chưa được định nghĩa properties trong 'src/tools.py'.")
-    else:
-        print("✅ [TODO 1.2]: Tool 'schedule_appointment' đã có schema đầy đủ.")
 
-    # Kiểm tra trạng thái TODO 2.1 (call_tool)
-    test_result = server.call_tool("academic_query", {"student_id": "SV2026001"})
-    if not test_result:
-        print("⏳ [TODO 2.1]: Hàm call_tool() đang trả về rỗng. Học viên hãy hoàn thiện TODO 2.1 trong 'src/mcp_server.py'!")
+    print("==========================================================")
+    print("🔌 KIỂM THỬ ĐỘC LẬP MCP SERVER (vinmec-health-mcp-server)")
+    print("==========================================================")
+
+    server = MCPVinmecServer()
+
+    # --------------------------------------------------------------------------
+    # Kiểm tra Server
+    # --------------------------------------------------------------------------
+
+    tools = server.list_tools()
+
+    print(
+        f"✅ Khởi tạo thành công MCP Server: "
+        f"{server.server_name} "
+        f"(Version: {server.version})"
+    )
+
+    print(f"📦 Số lượng Tools công bố: {len(tools)}")
+
+    # --------------------------------------------------------------------------
+    # Kiểm tra Tool Schema
+    # --------------------------------------------------------------------------
+
+    schedule_tool = next(
+        (
+            t for t in tools
+            if t.get("name") == "schedule_appointment"
+        ),
+        None
+    )
+
+    if (
+        schedule_tool
+        and not schedule_tool.get("parameters", {}).get("properties")
+    ):
+        print(
+            " Tool 'schedule_appointment' "
+            "chưa được định nghĩa properties."
+        )
     else:
-        print(f"✅ [TODO 2.1]: Test dispatch tool 'academic_query' thành công:")
-        print(f"   Phản hồi JSON-RPC: {json.dumps(test_result, ensure_ascii=False)}")
+        print(
+            " Tool 'schedule_appointment' "
+            "đã có schema đầy đủ."
+        )
+
+    # --------------------------------------------------------------------------
+    # Kiểm tra Tool Dispatch
+    # --------------------------------------------------------------------------
+
+    test_result = server.call_tool(
+        "doctor_schedule_query",
+        {
+            "doctor_name": "Phạm Văn Khoa",
+            "specialty": "Tim mạch",
+            "date": "20/09/2026"
+        }
+    )
+
+    if not test_result:
+
+        print(
+            "Hàm call_tool() đang trả về rỗng. "
+            "Hãy kiểm tra lại Tool Dispatch."
+        )
+
+    else:
+
+        print(
+            "Test dispatch tool 'doctor_schedule_query' thành công:"
+        )
+
+        print(
+            f"   Phản hồi JSON-RPC: "
+            f"{json.dumps(test_result, ensure_ascii=False)}"
+        )
