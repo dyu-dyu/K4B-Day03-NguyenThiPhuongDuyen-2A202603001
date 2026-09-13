@@ -202,12 +202,12 @@ if __name__ == "__main__":
         print("🎮 [INTERACTIVE MODE] Trò chuyện trực tiếp với ReAct Agent:")
         print("💡 Gợi ý câu hỏi thử nghiệm:")
         print("   - Câu hỏi chung: 'Vinmec có những chuyên khoa nào?'")
-        print("   - Tra cứu bác sĩ: 'Hãy tra cứu lịch làm việc của bác sĩ Nguyễn Văn An thuộc khoa Tim mạch.'")
-        print("   - Đặt lịch: 'Tôi muốn đặt lịch khám Tim mạch với bác sĩ Nguyễn Văn An vào lúc 09:00 ngày 20/09/2026.'")
+        print("   - Tra cứu bác sĩ: 'Hãy tra cứu lịch làm việc của bác sĩ Phạm Văn Khoa thuộc khoa Tim mạch.'")
+        print("   - Đặt lịch: 'Tôi muốn đặt lịch khám Tim mạch với bác sĩ Phạm Văn Khoa vào lúc 09:00 ngày 20/09/2026.'")
         print("   - Gõ 'exit' hoặc 'quit' để kết thúc phiên trò chuyện.\n")
         while True:
             try:
-                user_input = input("👤 Sinh viên hỏi: ").strip()
+                user_input = input("👤 Bệnh nhân hỏi: ").strip()
                 if not user_input or user_input.lower() in ["exit", "quit"]:
                     print("👋 Tạm biệt! Kết thúc phiên trò chuyện.")
                     break

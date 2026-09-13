@@ -26,13 +26,13 @@ Dán 1 đoạn trích xuất log tiêu biểu từ file `docs/trace_waterfall.js
 
 ```json
 [
-  {
-     "step": 2,
-    "query": "tôi muốn đặt lịch bác sĩ Phạm Văn Khoa khoa tim mạch",
+   {
+    "step": 1,
+    "query": "Đặt lịch khám sức khỏe cho tôi",
     "action_type": "FINAL_ANSWER",
-    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Đặt lịch khám thành công cho bệnh nhân PATIENT001 với bác sĩ Phạm Văn Khoa vào lúc 09:00 20/09/2026.",
-    "latency_ms": 10.0
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Để hỗ trợ bạn đặt lịch khám sức khỏe tại Vinmec, bạn vui lòng cung cấp thêm các thông tin sau:\n\n1. **Mã bệnh nhân / Mã sinh viên** của bạn.\n2. **Tên bác sĩ** hoặc **Chuyên khoa** bạn muốn khám (ví dụ: Tim mạch, Nội tiết, Nhi khoa, Khám tổng quát...).\n3. **Thời gian mong muốn** (Ngày và giờ khám, ví dụ: 20/09/2026 lúc 09:00).\n\nNgay khi nhận được thông tin, tôi sẽ kiểm tra lịch khám và tiến hành đặt lịch cho bạn!",
+    "latency_ms": 4386.55
   }
 ]
 ```
@@ -41,10 +41,10 @@ Dán 1 đoạn trích xuất log tiêu biểu từ file `docs/trace_waterfall.js
 
 ## 3. TỔNG KẾT KẾT QUẢ NGHIỆM THU & NỘP BÀI
 
-- [ ] Đã điền API Key thật trong `.env` và xác nhận Agent chạy mượt mà trên LLM API thật (Gemini/OpenAI).
+- [+] Đã điền API Key thật trong `.env` và xác nhận Agent chạy mượt mà trên LLM API thật (Gemini/OpenAI).
 - **Tổng số Test Cases đã chạy thành công:** 5/ 5 test cases.
-- **Số lượt gọi Tool qua MCP Server chính xác:** ___ lượt.
-- **Kết quả đẩy Repo nộp bài:** [ ] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
+- **Số lượt gọi Tool qua MCP Server chính xác:** 4 lượt.
+- **Kết quả đẩy Repo nộp bài:** [+] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
 
 ---
 

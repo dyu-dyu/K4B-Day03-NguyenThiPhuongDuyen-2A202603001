@@ -1,10 +1,10 @@
 [
   {
     "step": 1,
-    "query": "exit()",
+    "query": "hu",
     "action_type": "FINAL_ANSWER",
     "thought": "Đây là câu hỏi chung về các chuyên khoa tại Vinmec, có thể trả lời trực tiếp mà không cần gọi Tool.",
     "output": "Vinmec cung cấp nhiều chuyên khoa khám chữa bệnh như Tim mạch, Nội tiết, Nhi khoa và nhiều chuyên khoa khác.",
-    "latency_ms": 0.0
+    "latency_ms": 2292.07
   }
 ]
