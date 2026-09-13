@@ -14,7 +14,7 @@
 | **2. Tool Interaction** | 5/ 5 | Đây là điểm mạnh nhất. Agent cần tương tác với database/MCP/API để lấy thông tin bác sĩ, chuyên khoa, lịch làm việc và tình trạng slot. Khi đặt lịch, agent còn cần gọi booking tool/API để tạo lịch khám. Nếu có thêm hồ sơ bệnh nhân, notification/email/SMS thì số lượng tool còn tăng. |
 | **3. Dynamic Decision** | 5/ 5 | Bước tiếp theo phụ thuộc trực tiếp vào kết quả trước đó. Ví dụ: nếu người dùng muốn khám tim → tìm khoa Tim mạch → tìm các bác sĩ còn lịch → nếu ngày mong muốn hết slot → đề xuất ngày khác → nếu người dùng không xác nhận → không tiến hành booking. |
 | **4. Long Horizon Goal** | 4/ 5 | Mục tiêu cuối cùng là “giúp người dùng hoàn tất một lịch khám phù hợp”, không chỉ cung cấp thông tin. Agent phải duy trì mục tiêu và các thông tin đã thu thập như chuyên khoa, bác sĩ, ngày, giờ, cơ sở, thông tin bệnh nhân qua nhiều bước/lượt hội thoại. Tuy nhiên, nếu workflow chỉ 5–7 bước và ít tương tác kéo dài thì chưa đến mức 5/5. |
-| **TỔNG ĐIỂM AGENTIC FIT** | **18/ 20** | *Nếu tổng điểm > 12/20: Bài toán rất phù hợp triển khai Agentic System.* |
+| **TỔNG ĐIỂM AGENTIC FIT** | **18/ 20** | *không chỉ cần một chatbot trả lời, mà có đủ đặc điểm để Agent phải tự quyết định bước tiếp theo, gọi Tool và dựa vào kết quả Tool để hoàn thành mục tiêu.* |
 
 ---
 
